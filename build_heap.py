@@ -1,41 +1,62 @@
 # python3
 
 
-def build_heap(data):
+def build_heap(data,n):
     swaps = []
-    # TODO: Creat heap and heap sort
-    # try to achieve  O(n) and not O(n2)
+    
+    for i in range(n//2,-1,-1):
+        node = i
+        
+        while True:
+            child = node*2+1
+            # print(node,child)
 
+            if child >= n:
+                break
+            if child+1 < n and data[child+1] < data[child]:
+                child += 1
+            if data[child] < data[node]:
+                swaps.append((node,child))
+
+                temp = data[node]
+                data[node] = data[child] 
+                data[child] = temp
+                node = child
+                # print(data)
+
+                if node*2+1 >= n:
+                    break
+            else:
+                break
 
     return swaps
 
 
 def main():
+    choice = input().strip().upper()
     
-    # TODO : add input and corresponding checks
-    # add another input for I or F 
-    # first two tests are from keyboard, third test is from a file
+    if choice == "I":
+        n = int(input())
+        if n < 1 or n > 100000:
+            print("Invalid input")
+            main()
+        data = list(map(int, input().split()))
+    elif choice == "F":
+        with open("./tests/04",'r') as f:
+            n = int(f.readline().strip())
+            data = list(map(int, f.readline().split()))
+    else: 
+        print("Invalid input")
+        main()
 
-
-    # input from keyboard
-    n = int(input())
-    data = list(map(int, input().split()))
-
-    # checks if lenght of data is the same as the said lenght
     assert len(data) == n
+    swaps = build_heap(data, n)
 
-    # calls function to assess the data 
-    # and give back all swaps
-    swaps = build_heap(data)
-
-    # TODO: output how many swaps were made, 
-    # this number should be less than 4n (less than 4*len(data))
-
-
-    # output all swaps
     print(len(swaps))
     for i, j in swaps:
         print(i, j)
+    
+    exit()
 
 
 if __name__ == "__main__":
